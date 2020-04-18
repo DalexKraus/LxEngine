@@ -41,6 +41,9 @@ void lxVaoDestroy(lxVao vao)
  */
 void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int dimension)
 {
+    _ASSERT(vao     != NULL, "The VAO instance must not be null!");
+    _ASSERT(data    != NULL, "The data must not be null!");
+
     //Generate new VBO id
     GLuint vboId;
     glGenBuffers(1, &vboId);
@@ -60,8 +63,11 @@ void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int 
  */
 void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indicesCount)
 {
+    _ASSERT(vao     != NULL,    "The VAO instance must not be null!");
+    _ASSERT(data    != NULL,    "The data must not be null!");
+    _ASSERT(indicesCount == 0,  "The indices count is zero!");
+    
     glGenBuffers(1, vao->iboId);
-
     lxVaoBind(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->iboId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), data, GL_STATIC_DRAW); //TODO: Change to dynamic for batch rendering
@@ -69,10 +75,12 @@ void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indices
 
 inline void lxVaoBind(lxVao vao)
 {
+    _ASSERT(vao != NULL, "The VAO instance must not be null!");
     glBindVertexArray(vao->id);
 }
 
 inline void lxVaoUnbind(lxVao vao)
 {
+    _ASSERT(vao != NULL, "The VAO instance must not be null!");
     glBindVertexArray(0);
 }
