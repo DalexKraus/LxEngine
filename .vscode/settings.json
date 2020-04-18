@@ -7,6 +7,9 @@
         "lx.h": "c",
         "glad.h": "c",
         "stdio.h": "c",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "list": "c",
+        "vector": "c",
+        "xstring": "c"
     }
 }
