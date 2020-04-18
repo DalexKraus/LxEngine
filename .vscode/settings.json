@@ -1,0 +1,12 @@
+{
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "lxwindow.h": "c",
+        "glfw3.h": "c",
+        "stdbool.h": "c",
+        "lx.h": "c",
+        "glad.h": "c",
+        "stdio.h": "c",
+        "xlocale": "cpp"
+    }
+}
