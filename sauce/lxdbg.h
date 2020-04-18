@@ -1,5 +1,5 @@
-#ifndef __DBG_H
-#define __DBG_H
+#ifndef __LXDBG_H
+#define __LXDBG_H
 
 #include "lx.h"
 

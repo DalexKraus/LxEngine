@@ -15,7 +15,7 @@
 #endif
 
 //LXEngine debugging util
-#include "dbg.h"
+#include "lxdbg.h"
 
 //GLAD and GLFW includes
 #include <glad/glad.h>
@@ -23,5 +23,6 @@
 
 //LXEngine Window
 #include "lxwindow.h"
+#include "lxvao.h"
 
 #endif
