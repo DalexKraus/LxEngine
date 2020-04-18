@@ -9,7 +9,7 @@ static int g_vaoCount = 0;
 lxVao lxVaoCreate()
 {
     lxVao vaoInstance = malloc(sizeof(lxVao));
-    glGenVertexArrays(1, vaoInstance->id);
+    glGenVertexArrays(1, &vaoInstance->id);
     g_vaoCount++;
 }
 
@@ -28,10 +28,10 @@ void lxVaoDestroy(lxVao vao)
         GLint vboId = 0;
         glGetVertexAttribiv(attr, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &vboId);
         if (vboId <= 0) continue;
-        glDeleteBuffers(1, vboId);
+        glDeleteBuffers(1, &vboId);
     }
 
-    glDeleteVertexArrays(1, vao->id);
+    glDeleteVertexArrays(1, &vao->id);
     free(vao);
     g_vaoCount--;
 }
@@ -67,7 +67,7 @@ void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indices
     _ASSERT(data    != NULL,    "The data must not be null!");
     _ASSERT(indicesCount == 0,  "The indices count is zero!");
     
-    glGenBuffers(1, vao->iboId);
+    glGenBuffers(1, &vao->iboId);
     lxVaoBind(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->iboId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), data, GL_STATIC_DRAW); //TODO: Change to dynamic for batch rendering
