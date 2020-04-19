@@ -22,6 +22,7 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
 #endif
 
     glfwWindowHint(GLFW_RESIZABLE, resizable);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     //Create window instance
     GLFWwindow* windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -32,6 +33,7 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
     window->height      = height;
     window->title       = title;
     window->vSync       = false;
+    window->antiAlias   = false;
 
 	if (windowHandle == NULL)
 	{
@@ -70,6 +72,12 @@ void lxWindowShow(lxWindow window, void (*draw_callback)(double deltaTime))
     double lastFrameTime = glfwGetTime();
 
     glClearColor(0.5f, 0.0f, 0.25f, 1.0f);
+
+    //Enable anti-aliasing if desired
+    if (window->antiAlias)
+        glEnable(GL_MULTISAMPLE);
+    else glDisable(GL_MULTISAMPLE);
+
     while (!glfwWindowShouldClose(window->glfwHandle))
     {
         double frameTime    = glfwGetTime();
@@ -89,6 +97,7 @@ void lxWindowShow(lxWindow window, void (*draw_callback)(double deltaTime))
  */
 void lxWindowDestroy(lxWindow window)
 {
+    _ASSERT(window != NULL, "The window instance must not be null!");
     glfwDestroyWindow(window->glfwHandle);
     glfwTerminate();
     free(window);
@@ -98,8 +107,18 @@ void lxWindowDestroy(lxWindow window)
  * Applies the v-sync setting to the specified window.
  * Note: Applying this setting while the display is showing, will not do anything until #lxWindowShow() is called.
  */
-void lxWindowVsync(lxWindow window, boolean useVsync)
+void lxWindowVsync(lxWindow window, bool useVsync)
 {
     _ASSERT(window != NULL, "The window instance must not be null!");
     window->vSync = true;
+}
+
+/**
+ * Enables anti aliasing for the specified window.
+ * Note: Applying this setting while the display is showing, will not do anything until #lxWindowShow() is called.
+ */
+void lxWindowAntiAlias(lxWindow window, bool antiAlias)
+{
+    _ASSERT(window != NULL, "The window instance must not be null!");
+    window->antiAlias = antiAlias;
 }

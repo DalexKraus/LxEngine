@@ -22,6 +22,7 @@ int main()
     printf("Starting engine ...\n");
     lxWindow window = lxWindowCreate("LynxEngine", 480, 270, false);
     lxWindowVsync(window, true);
+    lxWindowAntiAlias(window, true);
 
     const char* shaderVsh = readFileContent("res/shaders/base.vsh");
     const char* shaderFsh = readFileContent("res/shaders/base.fsh");
