@@ -23,6 +23,5 @@
 
 //LXEngine Window
 #include "lxwindow.h"
-#include "lxvao.h"
 
 #endif
