@@ -1,3 +1,4 @@
+#include "lxvao.h"
 #include "lx.h"
 
 //Global VAO count
@@ -11,6 +12,7 @@ lxVao lxVaoCreate()
     lxVao vaoInstance = malloc(sizeof(lxVao));
     glGenVertexArrays(1, &vaoInstance->id);
     g_vaoCount++;
+    return vaoInstance;
 }
 
 /**
@@ -65,7 +67,7 @@ void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indices
 {
     _ASSERT(vao     != NULL,    "The VAO instance must not be null!");
     _ASSERT(data    != NULL,    "The data must not be null!");
-    _ASSERT(indicesCount == 0,  "The indices count is zero!");
+    _ASSERT(indicesCount != 0,  "The indices count is zero!");
     
     glGenBuffers(1, &vao->iboId);
     lxVaoBind(vao);
