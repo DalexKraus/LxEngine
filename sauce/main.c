@@ -7,12 +7,17 @@
 
 lxVao vao;
 lxShader shader;
+mat4 projectionMatrix;
 
 void draw(double deltaTime)
 {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    
     lxShaderStart(shader);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    lxShaderUniform u_projectionMatrix = lxShaderGetUniformLocation(shader, "projectionMatrix");
+    lxShaderUniformMat4(u_projectionMatrix, projectionMatrix);
+
     glEnableVertexAttribArray(0);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);    
 
@@ -49,12 +54,12 @@ int main()
     lxVaoStoreIndicesList(vao, indices, sizeof(indices), 6);
     lxVaoStoreData(vao, 0, vertices, sizeof(vertices), 3);
 
-    vec4 a, b;
-    
-    glm_vec4_one(a);
-    glm_vec4_one(b);
+    vec3 translation = { 0, 0, -5.0 };
 
-    glm_vec4_add(a, b, a);
+    float fovY      = 75;
+    float aspect    = (float) window->width / (float) window->height;
+    glm_perspective(fovY, aspect, 0.01f, 10.0f, projectionMatrix);
+    glm_translate_to(projectionMatrix, translation, projectionMatrix);
 
     lxWindowShow(window, &draw);
     
