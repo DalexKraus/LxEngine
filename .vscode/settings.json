@@ -10,6 +10,8 @@
         "xlocale": "cpp",
         "list": "c",
         "vector": "c",
-        "xstring": "c"
+        "xstring": "c",
+        "lxshader.h": "c",
+        "lxdbg.h": "c"
     }
 }
