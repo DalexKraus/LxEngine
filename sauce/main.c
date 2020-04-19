@@ -3,6 +3,8 @@
 #include "lxshader.h"
 #include "fileutil.h"
 
+#include "cglm/cglm.h"
+
 lxVao vao;
 lxShader shader;
 
@@ -46,6 +48,13 @@ int main()
     vao = lxVaoCreate();
     lxVaoStoreIndicesList(vao, indices, sizeof(indices), 6);
     lxVaoStoreData(vao, 0, vertices, sizeof(vertices), 3);
+
+    vec4 a, b;
+    
+    glm_vec4_one(a);
+    glm_vec4_one(b);
+
+    glm_vec4_add(a, b, a);
 
     lxWindowShow(window, &draw);
     

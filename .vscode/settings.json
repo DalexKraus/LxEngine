@@ -12,6 +12,9 @@
         "vector": "c",
         "xstring": "c",
         "lxshader.h": "c",
-        "lxdbg.h": "c"
+        "lxdbg.h": "c",
+        "cglm.h": "c",
+        "vec4.h": "c",
+        "vec3.h": "c"
     }
 }
