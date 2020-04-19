@@ -31,6 +31,7 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
     window->width       = width;
     window->height      = height;
     window->title       = title;
+    window->vSync       = false;
 
 	if (windowHandle == NULL)
 	{
@@ -51,7 +52,6 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
 	}
 
     glViewport(0, 0, width, height);
-	glfwSwapInterval(1);
 
     return window;
 }
@@ -59,16 +59,25 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
 /**
  * Starts displaying the specified window, and stars a render loop.
  */
-void lxWindowShow(lxWindow window, void (*draw_callback)(float deltaTime))
+void lxWindowShow(lxWindow window, void (*draw_callback)(double deltaTime))
 {
     _ASSERT(window          != NULL, "The window instance must not be null!");
     _ASSERT(draw_callback   != NULL, "The draw callback must not be null!");
 
+    //Enable vertical synchronization if desired
+	glfwSwapInterval(window->vSync);
+
+    double lastFrameTime = glfwGetTime();
+
     glClearColor(0.5f, 0.0f, 0.25f, 1.0f);
     while (!glfwWindowShouldClose(window->glfwHandle))
     {
+        double frameTime    = glfwGetTime();
+        double deltaTime    = frameTime - lastFrameTime;
+        lastFrameTime       = frameTime;
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        draw_callback(0);
+        draw_callback(deltaTime);
 
         glfwSwapBuffers(window->glfwHandle);
 		glfwPollEvents();
@@ -83,4 +92,14 @@ void lxWindowDestroy(lxWindow window)
     glfwDestroyWindow(window->glfwHandle);
     glfwTerminate();
     free(window);
+}
+
+/**
+ * Applies the v-sync setting to the specified window.
+ * Note: Applying this setting while the display is showing, will not do anything until #lxWindowShow() is called.
+ */
+void lxWindowVsync(lxWindow window, boolean useVsync)
+{
+    _ASSERT(window != NULL, "The window instance must not be null!");
+    window->vSync = true;
 }
