@@ -15,6 +15,14 @@
         "lxdbg.h": "c",
         "cglm.h": "c",
         "vec4.h": "c",
-        "vec3.h": "c"
+        "vec3.h": "c",
+        "algorithm": "cpp",
+        "iosfwd": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "xhash": "cpp",
+        "xlocbuf": "cpp",
+        "fileutil.h": "c"
     }
 }

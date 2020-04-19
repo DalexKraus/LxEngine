@@ -1,25 +1,42 @@
 #include "lx.h"
 #include "lxvao.h"
 #include "lxshader.h"
-#include "fileutil.h"
+#include "lxcamera.h"
 
-#include "cglm/cglm.h"
+#include "fileutil.h"
 
 lxVao vao;
 lxShader shader;
-mat4 projectionMatrix;
+lxCamera camera;
 
 void draw(double deltaTime)
 {
+    //Update time
+    //Update camera
+    double time = glfwGetTime();
+    float x = (float) cos(time) * 5;
+    float z = (float) sin(time) * 5; 
+
+    vec3 translation = { x, 0, z };
+
+    lxCameraPosition(camera, translation);
+    lxCameraUpdateView(camera);
+
+    int fps = (int) (1.0 / deltaTime);
+    printf("FPS: %d\n", fps);
+
+    //Draw
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     lxShaderStart(shader);
 
-    lxShaderUniform u_projectionMatrix = lxShaderGetUniformLocation(shader, "projectionMatrix");
-    lxShaderUniformMat4(u_projectionMatrix, projectionMatrix);
+    lxShaderUniform u_projectionMatrix  = lxShaderGetUniformLocation(shader, "projectionMatrix");
+    lxShaderUniform u_viewMatrix        = lxShaderGetUniformLocation(shader, "viewMatrix");
+    lxShaderUniformMat4(u_projectionMatrix, camera->projectionMatrix);
+    lxShaderUniformMat4(u_viewMatrix,       camera->viewMatrix);
 
     glEnableVertexAttribArray(0);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);    
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     lxShaderStop();
 }
@@ -27,8 +44,7 @@ void draw(double deltaTime)
 int main()
 {
     printf("Starting engine ...\n");
-    lxWindow window = lxWindowCreate("LynxEngine", 480, 270, false);
-    lxWindowVsync(window, true);
+    lxWindow window = lxWindowCreate("LynxEngine", 1280, 720, false);
     lxWindowAntiAlias(window, true);
 
     const char* shaderVsh = readFileContent("res/shaders/base.vsh");
@@ -40,10 +56,10 @@ int main()
     lxShaderLink(shader, NULL);
 
     float vertices[] = {
-		-0.5f, 0.5f, -1.0f,
-		-0.5f, -0.5f, -1.0f,
-		0.5f, -0.5f, -1.0f,
-		0.5f, 0.5f, -1.0f
+		-0.5f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f
 	};
 
 	unsigned int indices[] = {
@@ -54,16 +70,15 @@ int main()
     lxVaoStoreIndicesList(vao, indices, sizeof(indices), 6);
     lxVaoStoreData(vao, 0, vertices, sizeof(vertices), 3);
 
-    vec3 translation = { 0, 0, -5.0 };
-
     float fovY      = 75;
     float aspect    = (float) window->width / (float) window->height;
-    glm_perspective(fovY, aspect, 0.01f, 10.0f, projectionMatrix);
-    glm_translate_to(projectionMatrix, translation, projectionMatrix);
+    camera = lxCameraCreate(fovY, aspect, 0.01f, 10.0f);
+    lxCameraUpdateProjection(camera);
 
     lxWindowShow(window, &draw);
     
     lxVaoDestroy(vao);
+    lxCameraDestroy(camera);
     lxShaderDestroy(shader);
     lxWindowDestroy(window);
     return 0;
