@@ -23,6 +23,7 @@
         "streambuf": "cpp",
         "xhash": "cpp",
         "xlocbuf": "cpp",
-        "fileutil.h": "c"
+        "fileutil.h": "c",
+        "cmath": "c"
     }
 }

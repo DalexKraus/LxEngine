@@ -14,10 +14,8 @@ void draw(double deltaTime)
     //Update time
     //Update camera
     double time = glfwGetTime();
-    float x = (float) cos(time) * 5;
-    float z = (float) sin(time) * 5; 
 
-    vec3 translation = { x, 0, z };
+    vec3 translation = { 0, 0, 5 };
 
     lxCameraPosition(camera, translation);
     lxCameraUpdateView(camera);

@@ -15,9 +15,11 @@ struct lxCameraData
     float pitch;
     float roll;
     
+    vec3 upVector, frontVector, rightVector, lookAt;
     vec3 position;
-    mat4 projectionMatrix;
     mat4 viewMatrix;
+
+    mat4 projectionMatrix;
 };
 typedef struct lxCameraData* lxCamera;
 
