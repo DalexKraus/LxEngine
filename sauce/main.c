@@ -5,18 +5,21 @@
 
 #include "fileutil.h"
 
+double dTime;
 lxVao vao;
 lxShader shader;
 lxCamera camera;
 
+void processInput(GLFWwindow* window);
+
 void draw(double deltaTime)
 {
     //Update time
-    //Update camera
+    dTime = deltaTime;
     double time = glfwGetTime();
 
-    vec3 translation = { 0, 0, 5 };
-
+    //Update camera
+    vec3 translation = { cos(time), 0, 5 + sin(time) };
     lxCameraPosition(camera, translation);
     lxCameraUpdateView(camera);
 
@@ -54,10 +57,10 @@ int main()
     lxShaderLink(shader, NULL);
 
     float vertices[] = {
-		-0.5f, 0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f
+		-0.5f, 0.5f, -1.0f,
+		-0.5f, -0.5f, -1.0f,
+		0.5f, -0.5f, -1.0f,
+		0.5f, 0.5f, -1.0f
 	};
 
 	unsigned int indices[] = {

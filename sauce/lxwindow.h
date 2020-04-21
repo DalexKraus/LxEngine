@@ -12,6 +12,7 @@ struct lxWindowData
     int height;
     const char* title;
     GLFWwindow* glfwHandle;
+    double deltaTime;
 };
 typedef struct lxWindowData* lxWindow;
 

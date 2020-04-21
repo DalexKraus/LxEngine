@@ -23,5 +23,6 @@
 
 //LXEngine Window
 #include "lxwindow.h"
+#include "lxinputmanager.h"
 
 #endif

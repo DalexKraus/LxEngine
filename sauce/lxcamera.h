@@ -3,6 +3,7 @@
 
 #include "cglm/vec3.h"
 #include "cglm/mat4.h"
+#include "lxinputmanager.h"
 
 struct lxCameraData
 {
@@ -25,6 +26,7 @@ typedef struct lxCameraData* lxCamera;
 
 lxCamera        lxCameraCreate(float fov, float aspect, float nearZ, float farZ);
 void            lxCameraDestroy(lxCamera camera);
+void            lxCameraInputManager(lxInputManager mgr);
 void            lxCameraUpdateProjection(lxCamera camera);
 void            lxCameraUpdateView(lxCamera camera);
 

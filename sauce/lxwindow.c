@@ -13,8 +13,8 @@ lxWindow lxWindowCreate(const char* title, int width, int height, bool resizable
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
@@ -83,6 +83,7 @@ void lxWindowShow(lxWindow window, void (*draw_callback)(double deltaTime))
         double frameTime    = glfwGetTime();
         double deltaTime    = frameTime - lastFrameTime;
         lastFrameTime       = frameTime;
+        window->deltaTime   = deltaTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         draw_callback(deltaTime);
