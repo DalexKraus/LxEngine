@@ -5,8 +5,8 @@ project(LynxEngine VERSION 1.1)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 # --------------------  Sources --------------------
-file(GLOB_RECURSE CXX_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "sauce/*.cpp")
-file(GLOB_RECURSE C_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "sauce/*.c")
+file(GLOB_RECURSE CXX_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp")
+file(GLOB_RECURSE C_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.c")
 
 add_executable(lxengine ${C_SOURCES} ${CXX_SOURCES})
 
