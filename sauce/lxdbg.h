@@ -1,6 +1,12 @@
 #ifndef __LXDBG_H
 #define __LXDBG_H
 
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void dbgPrint(const char* msg);
 void dbgErr(const char* msg);
 void dbgInfo(const char* msg);
@@ -15,5 +21,9 @@ void        dbgErrBox(const char* msg);
 #define _ASSERT(check, errorText) assertBox(check, __func__, __FILE__, __LINE__, errorText);
 #endif
 void assertBox(bool ckSuccess, char* cFuncName, char* cFileName, int cLNum, const char* errorText);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

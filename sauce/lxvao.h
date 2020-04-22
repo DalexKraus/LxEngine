@@ -1,6 +1,10 @@
 #ifndef __LXVAO_H
 #define __LXVAO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "lx.h"
 
 struct lxVaoData
@@ -20,5 +24,9 @@ void        lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int 
 
 inline void lxVaoBind(lxVao vao);
 inline void lxVaoUnbind(lxVao vao);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

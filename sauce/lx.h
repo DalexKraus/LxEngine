@@ -6,7 +6,6 @@
 //Standard libraries
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include <stdio.h>
 
 #ifdef _WIN32
@@ -23,6 +22,7 @@
 
 //LXEngine Window
 #include "lxwindow.h"
+#include "lxcamera.hpp"
 #include "lxinputmanager.h"
 
 #endif
