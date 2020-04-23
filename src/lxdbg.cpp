@@ -1,6 +1,9 @@
 #include "lxdbg.hpp"
+
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -26,7 +29,7 @@ void dbgInfo(const char* msg)
 
 void dbgMsgBox(const char* title, const char* message)
 {
-    MSGBOX(0, message, title, 0);
+    MSGBOX(message, title);
 }
 
 void dbgErrBox(const char* msg)
