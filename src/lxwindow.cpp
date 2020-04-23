@@ -23,24 +23,24 @@ LxWindow::LxWindow(const char* title, int width, int height, bool resizable)
 
     //Create window instance
     m_glfwHandle = glfwCreateWindow(width, height, title, NULL, NULL);
-    
-	if (m_glfwHandle == NULL)
-	{
+
+    if (m_glfwHandle == NULL)
+    {
         dbgErr("Unable to create window!");
         glfwTerminate();
-		return;
-	}
+        return;
+    }
 
-	glfwMakeContextCurrent(m_glfwHandle);
-	glfwSetInputMode(m_glfwHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwMakeContextCurrent(m_glfwHandle);
+    glfwSetInputMode(m_glfwHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	//Initialize GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
+    //Initialize GLAD
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
         dbgErr("Failed to inizialize GLAD!");
         glfwTerminate();
-		return;
-	}
+        return;
+    }
 
     glViewport(0, 0, width, height);
 }
@@ -51,7 +51,7 @@ LxWindow::LxWindow(const char* title, int width, int height, bool resizable)
 void LxWindow::show(void (*draw_callback)(double deltaTime))
 {
     //Enable vertical synchronization if desired
-	glfwSwapInterval(m_vsync);
+    glfwSwapInterval(m_vsync);
 
     double lastFrameTime = glfwGetTime();
 
@@ -73,6 +73,6 @@ void LxWindow::show(void (*draw_callback)(double deltaTime))
         draw_callback(deltaTime);
 
         glfwSwapBuffers(m_glfwHandle);
-		glfwPollEvents();
+        glfwPollEvents();
     }
 }

@@ -40,13 +40,13 @@ void camctrl_keyboard(GLFWwindow* window)
 void camctrl_mouse(GLFWwindow* window, double xpos, double ypos)
 {
     float xOffset = (float) (lastX - xpos);
-	float yOffset = (float) (ypos - lastY); // Reversed because y range from bottom to top
+    float yOffset = (float) (ypos - lastY); // Reversed because y range from bottom to top
 
-	lastX = (float) xpos;
-	lastY = (float) ypos;
+    lastX = (float) xpos;
+    lastY = (float) ypos;
 
-	xOffset *= CAM_SENSITIVITY;
-	yOffset *= CAM_SENSITIVITY;
+    xOffset *= CAM_SENSITIVITY;
+    yOffset *= CAM_SENSITIVITY;
 
     camera->rotate(xOffset, yOffset, roll);
 }
