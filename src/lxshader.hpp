@@ -1,7 +1,7 @@
 #ifndef __LXSHADER_H
 #define __LXSHADER_H
 
-#include "lx.h"
+#include "lx.hpp"
 
 //Only include the needed glm stuff
 #include "glm/mat4x4.hpp"

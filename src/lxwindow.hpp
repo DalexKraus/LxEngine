@@ -1,35 +1,34 @@
 #ifndef __LXWINDOW_H
 #define __LXWINDOW_H
 
-#include "lx.h"
+#include "lx.hpp"
 
 class LxWindow
 {
 private:
-    bool resizable;
-    bool vSync;
-    bool antiAlias;
-    int width;
-    int height;
-    const char* title;
-    GLFWwindow* glfwHandle;
-    double deltaTime;
-}
+    int m_width, m_height;
+    const char* m_title;
+    bool m_resizable, m_vsync, m_antialias;
 
+    GLFWwindow* m_glfwHandle;
+    double m_deltaTime;
 
-struct lxWindowData
-{
-    
+public:
+    LxWindow(const char* title, int width, int height, bool resizable);
+    ~LxWindow()
+    {
+        glfwDestroyWindow(m_glfwHandle);
+        glfwTerminate();
+    }
+
+    //Show the window
+    void            show(void (*draw_callback)(double deltaTime));
+
+    //Properties
+    inline void     useVsync(bool vSync)        { m_vsync = vSync;          }
+    inline void     antiAlias(bool antiAlias)   { m_antialias = antiAlias;  }
+    inline int      width()                     { return m_width;           }
+    inline int      height()                    { return m_height;          }
 };
-typedef struct lxWindowData* lxWindow;
-
-
-// Functions
-lxWindow    lxWindowCreate(const char* title, int width, int height, bool resizable);
-void        lxWindowShow(lxWindow window, void (*draw_callback)(double deltaTime));
-void        lxWindowDestroy(lxWindow window);
-
-void        lxWindowVsync(lxWindow window, bool useVsync);
-void        lxWindowAntiAlias(lxWindow window, bool antiAlias);
 
 #endif

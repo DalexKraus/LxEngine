@@ -4,6 +4,8 @@
 #include "glm/vec3.hpp"
 #include "glm/mat4x4.hpp"
 
+#include <stdio.h>
+
 class LxCamera
 {
 private:
@@ -21,7 +23,10 @@ public:
     LxCamera(float fov, float aspect, float nearZ, float farZ)
         : m_fov(fov), m_aspect(aspect), m_nearZ(nearZ), m_farZ(farZ)
     {
-        m_up    = glm::vec3(0, 1, 0);
+        m_up        = glm::vec3(0, 1, 0);
+        m_right     = glm::vec3(0, 0, 0);
+        m_front     = glm::vec3(0, 0, 0);
+
         m_yaw   = (float) (-(3.14159) / 2.0); // PI / 2 = 90°
         updateProjection();
         updateView();

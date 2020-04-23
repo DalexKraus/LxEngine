@@ -3,27 +3,28 @@
 
 #include <stdbool.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void dbgPrint(const char* msg);
 void dbgErr(const char* msg);
 void dbgInfo(const char* msg);
 
-void        dbgMsgBox(const char* title, const char* message);
-void        dbgErrBox(const char* msg);
+void dbgMsgBox(const char* title, const char* message);
+void dbgErrBox(const char* msg);
 
 //-------------------------------------------------------
-//Note: symbol __func__ is defined in "lx.h"
-#include "lx.h"
+#ifdef _WIN32
+#define __func__ __FUNCTION__
+#endif
+
 #ifndef _ASSERT
 #define _ASSERT(check, errorText) assertBox(check, __func__, __FILE__, __LINE__, errorText);
 #endif
-void assertBox(bool ckSuccess, char* cFuncName, char* cFileName, int cLNum, const char* errorText);
 
-#ifdef __cplusplus
-}
+#ifdef _WIN32
+#define DBGTXTPRM char*
+#else
+#define DBGTXTPRM const char*
 #endif
+
+void assertBox(bool ckSuccess, DBGTXTPRM cFuncName, DBGTXTPRM cFileName, int cLNum, DBGTXTPRM errorText);
 
 #endif

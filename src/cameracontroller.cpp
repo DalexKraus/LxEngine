@@ -1,11 +1,11 @@
-#include "lx.h"
+#include "lx.hpp"
 
-extern lxWindow window;
+extern LxWindow window;
 extern LxCamera camera;
 
 void camctrl_keyboard()
 {
-    float cameraSpeed = 2.5 * window->deltaTime;
+    //float cameraSpeed = 2.5 * window->deltaTime;
 
     /*
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

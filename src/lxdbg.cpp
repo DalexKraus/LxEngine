@@ -1,8 +1,10 @@
-#include "lxdbg.h"
+#include "lxdbg.hpp"
+#include <stdio.h>
+#include <stdlib.h>
 
 void dbgPrint(const char* msg)
 {
-    printf(msg);
+    printf("%s\n", msg);
 }
 
 void dbgErr(const char* msg)
@@ -29,7 +31,7 @@ void dbgErrBox(const char* msg)
     dbgMsgBox("Error", msg);
 }
 
-void assertBox(bool ckSuccess, char* cFuncName, char* cFileName, int cLNum, const char* errorText)
+void assertBox(bool ckSuccess, DBGTXTPRM cFuncName, DBGTXTPRM cFileName, int cLNum, DBGTXTPRM errorText)
 {
     if (ckSuccess) return;
 

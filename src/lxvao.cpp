@@ -1,5 +1,4 @@
-#include "lxvao.h"
-#include "lx.h"
+#include "lxvao.hpp"
 
 //Global VAO count
 static int g_vaoCount = 0;
@@ -9,7 +8,7 @@ static int g_vaoCount = 0;
  */
 lxVao lxVaoCreate()
 {
-    lxVao vaoInstance = malloc(sizeof(lxVao));
+    lxVao vaoInstance = (lxVao) malloc(sizeof(lxVao));
     glGenVertexArrays(1, &vaoInstance->id);
     g_vaoCount++;
     return vaoInstance;
@@ -27,8 +26,8 @@ void lxVaoDestroy(lxVao vao)
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAttributes);
     for (int attr = 0; attr < maxAttributes; attr++)
     {
-        GLint vboId = 0;
-        glGetVertexAttribiv(attr, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &vboId);
+        GLuint vboId = 0;
+        glGetVertexAttribiv(attr, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, (GLint*) &vboId);
         if (vboId <= 0) continue;
         glDeleteBuffers(1, &vboId);
     }

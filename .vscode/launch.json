@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(debug) Launch",
             "type": "cppdbg",
             "request": "launch",
             // Resolved by CMake Tools:
@@ -14,7 +14,15 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "externalConsole": true,
-            "miDebuggerPath": "D:/TDM-GCC-64/bin/gdb.exe"
+
+            "windows": {
+                "miDebuggerPath": "D:/TDM-GCC-64/bin/gdb.exe"
+            },
+
+            "osx": {
+                "MIMode": "lldb",
+                "miDebuggerPath": "/usr/bin/lldb"
+            }
         }
     ]
 }

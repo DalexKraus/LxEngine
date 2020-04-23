@@ -1,6 +1,6 @@
-#include "lx.h"
-#include "lxvao.h"
-#include "lxshader.h"
+#include "lx.hpp"
+#include "lxvao.hpp"
+#include "lxshader.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -9,22 +9,22 @@
 double dTime;
 lxVao vao;
 lxShader shader;
-lxWindow window;
-LxCamera camera;
+LxWindow* window;
+LxCamera* camera;
 
 extern void camctrl_keyboard();
 extern void camctrl_mouse();
 
 void draw(double deltaTime)
 {
+    /*
     //Update time
     dTime = deltaTime;
     double time = glfwGetTime();
 
     //Update camera
-    glm::vec3 translation = { cos(time), 0, 5 + sin(time) };
-    camera.setPosition(translation);
-
+    glm::vec3 translation = glm::vec3(cos(time), 0, 5 + sin(time));
+    //camera->setPosition(translation);
 
     int fps = (int) (1.0 / deltaTime);
     printf("FPS: %d\n", fps);
@@ -36,24 +36,30 @@ void draw(double deltaTime)
 
     lxShaderUniform u_projectionMatrix  = lxShaderGetUniformLocation(shader, "projectionMatrix");
     lxShaderUniform u_viewMatrix        = lxShaderGetUniformLocation(shader, "viewMatrix");
-    lxShaderUniformMat4(u_projectionMatrix, camera.getProjection());
-    lxShaderUniformMat4(u_viewMatrix,       camera.getView());
+    lxShaderUniformMat4(u_projectionMatrix, camera->getProjection());
+    lxShaderUniformMat4(u_viewMatrix,       camera->getView());
+
 
     glEnableVertexAttribArray(0);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     lxShaderStop();
+
+    */
 }
 
 int main()
 {
     printf("Starting engine ...\n");
-    window = lxWindowCreate("LynxEngine", 1280, 720, false);
-    lxWindowAntiAlias(window, true);
-    lxWindowVsync(window, true);
+    
+    //window = new LxWindow("LynxEngine", 1280, 720, false);
+    //window->antiAlias(true);
+    //window->useVsync(true);
 
-    const char* shaderVsh = readFileContent("res/shaders/base.vsh");
-    const char* shaderFsh = readFileContent("res/shaders/base.fsh");
+    //const char* shaderVsh = readFileContent("res/shaders/base.vsh");
+    //const char* shaderFsh = readFileContent("res/shaders/base.fsh");
+
+    /*
 
     shader = lxShaderCreate();
     lxShaderCompile(shader, shaderVsh, GL_VERTEX_SHADER);
@@ -76,13 +82,14 @@ int main()
     lxVaoStoreData(vao, 0, vertices, sizeof(vertices), 3);
 
     float fovY      = 75;
-    float aspect    = (float) window->width / (float) window->height;
-    camera          = LxCamera(fovY, aspect, 0.001f, 10.0f);
+    float aspect    = (float) window->width() / (float) window->height();
+    //camera          = new LxCamera(fovY, aspect, 0.001f, 10.0f);
 
-    lxWindowShow(window, &draw);
+    //window->show(&draw);
     
     lxVaoDestroy(vao);
     lxShaderDestroy(shader);
-    lxWindowDestroy(window);
+    delete window;
+    */ 
     return 0;
 }

@@ -1,5 +1,5 @@
 #include "lxcamera.hpp"
-#include "lxdbg.h"
+#include "lxdbg.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_precision.hpp"

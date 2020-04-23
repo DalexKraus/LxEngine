@@ -1,4 +1,5 @@
 #include "lxshader.hpp"
+#include "lxdbg.hpp"
 
 bool checkError(int programId, GLuint errorType);
 
@@ -7,7 +8,7 @@ bool checkError(int programId, GLuint errorType);
  */
 lxShader lxShaderCreate()
 {
-    lxShader shader = malloc(sizeof(lxShader));
+    lxShader shader = (lxShader) malloc(sizeof(lxShader));
     *shader = glCreateProgram();
     return shader;
 }
