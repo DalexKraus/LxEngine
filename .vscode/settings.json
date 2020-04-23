@@ -24,6 +24,15 @@
         "xhash": "cpp",
         "xlocbuf": "cpp",
         "fileutil.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "windows.h": "c",
+        "memory": "cpp",
+        "type_traits": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp",
+        "ios": "cpp",
+        "filesystem": "c"
     }
 }
