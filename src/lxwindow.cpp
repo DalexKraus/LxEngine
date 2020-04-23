@@ -42,8 +42,6 @@ LxWindow::LxWindow(const char* title, int width, int height, bool resizable)
 		return;
 	}
 
-
-
     glViewport(0, 0, width, height);
 }
 

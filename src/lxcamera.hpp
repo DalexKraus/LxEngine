@@ -28,23 +28,46 @@ public:
         m_front     = glm::vec3(0, 0, 0);
 
         m_yaw   = (float) (-(3.14159) / 2.0); // PI / 2 = 90°
+        m_pitch = m_roll = 0;
+
+        m_position.x = m_position.y = m_position.z = 0;
+        
         updateProjection();
         updateView();
     }
 
-    inline void     translate(glm::vec3 translation)
+    inline void rotate(float& dYaw, float& dPitch, float& dRoll)
+    {
+        m_pitch += dPitch;
+        m_yaw   += dYaw;
+        m_roll  += dRoll;
+        
+        //Camera constraints
+        if (m_pitch > 89.0f)
+            m_pitch = 89.0f;
+        if (m_pitch < -89.0f)
+            m_pitch = -89.0f;
+    }
+
+    inline void translate(glm::vec3 translation)
     {
         m_position += translation;
     }
 
-    inline void     setPosition(glm::vec3 position)
+    inline void setPosition(glm::vec3 position)
     {
         m_position = position;
     }
 
     void            updateProjection();
     void            updateView();
+    
+    //TODO: Make accessors read only (const?)
     glm::vec3*      getPosition()       { return &m_position;       }
+    glm::vec3*      getUp()             { return &m_up;             }
+    glm::vec3*      getFront()          { return &m_front;          }
+    glm::vec3*      getRight()          { return &m_right;          }
+
     glm::mat4*      getProjection()     { return &m_projection;     }
     glm::mat4*      getView()           { return &m_view;           }
 

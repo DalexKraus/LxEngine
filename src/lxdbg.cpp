@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef _WIN32
+#include <Windows.h>
+#define MSGBOX(msg, title) MessageBoxA(0, msg, title, 0);
+#else
+#define MSGBOX(msg, title) dbgErr("Unable to display message box, as host os is not windows.")
+#endif
+
 void dbgPrint(const char* msg)
 {
     printf("%s\n", msg);
@@ -19,11 +26,7 @@ void dbgInfo(const char* msg)
 
 void dbgMsgBox(const char* title, const char* message)
 {
-    #ifdef _WIN32
-    MessageBox(0, message, title, 0);
-    #else
-    dbgErr("Unable to display message box, as host os is not windows.");
-    #endif    
+    MSGBOX(0, message, title, 0);
 }
 
 void dbgErrBox(const char* msg)

@@ -22,13 +22,15 @@ public:
     }
 
     //Show the window
-    void            show(void (*draw_callback)(double deltaTime));
+    void                show(void (*draw_callback)(double deltaTime));
 
     //Properties
-    inline void     useVsync(bool vSync)        { m_vsync = vSync;          }
-    inline void     antiAlias(bool antiAlias)   { m_antialias = antiAlias;  }
-    inline int      width()                     { return m_width;           }
-    inline int      height()                    { return m_height;          }
+    inline void         useVsync(bool vSync)        { m_vsync = vSync;          }
+    inline void         antiAlias(bool antiAlias)   { m_antialias = antiAlias;  }
+    inline int          width()                     { return m_width;           }
+    inline int          height()                    { return m_height;          }
+    inline double       deltaTime() const           { return m_deltaTime;       }
+    inline GLFWwindow*  handle()                    { return m_glfwHandle;      }
 };
 
 #endif
