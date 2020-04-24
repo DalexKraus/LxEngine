@@ -64,7 +64,7 @@ int main()
     lxShaderLink(shader, NULL);
 
     float vertices[] = {
-		-0.5f, 0.5f, -1.0f,     //upper left
+		-10.5f, 0.5f, -1.0f,     //upper left
 		-0.5f, -0.5f, -1.0f,    //lower left
 		0.5f, -0.5f, -1.0f,     //lower right
 		0.5f, 0.5f, -1.0f,      //upper right
@@ -80,7 +80,7 @@ int main()
 
     float fovY      = 120;
     float aspect    = (float) lxwindow->width() / (float) lxwindow->height();
-    camera          = new LxCamera(fovY, aspect, 0.001f, 10.0f);
+    camera          = new LxCamera(fovY, aspect, 0.001f, 1000.0f);
     camera->translate(glm::vec3(0,0,5));
 
     //Camera callbacks
