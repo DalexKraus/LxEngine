@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "6157"
-	"mapversion" "10"
+	"mapversion" "13"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "10"
+	"mapversion" "13"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -28,35 +28,35 @@ world
 	"skyname" "sky_day01_01"
 	solid
 	{
-		"id" "6"
+		"id" "143"
 		side
 		{
-			"id" "12"
-			"plane" "(0 64 64) (64 64 64) (64 0 64)"
+			"id" "271"
+			"plane" "(-64 64 64) (64 64 64) (64 -64 64)"
 			"material" "BRICK/BRICKFLOOR001A"
 			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 -1 0 256] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
 		}
 		side
 		{
-			"id" "13"
-			"plane" "(0 0 0) (64 0 0) (64 64 0)"
+			"id" "272"
+			"plane" "(-64 -64 -64) (64 -64 -64) (64 64 -64)"
 			"material" "BRICK/BRICKFLOOR001A"
 			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 -1 0 256] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
 		}
 		side
 		{
-			"id" "14"
-			"plane" "(0 64 64) (0 0 64) (0 0 0)"
+			"id" "273"
+			"plane" "(-64 64 64) (-64 -64 64) (-64 -64 -64)"
 			"material" "BRICK/BRICKFLOOR001A"
-			"uaxis" "[0 1 0 -256] 0.25"
+			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -64,10 +64,10 @@ world
 		}
 		side
 		{
-			"id" "15"
-			"plane" "(64 64 0) (64 0 0) (64 0 64)"
+			"id" "274"
+			"plane" "(64 64 -64) (64 -64 -64) (64 -64 64)"
 			"material" "BRICK/BRICKFLOOR001A"
-			"uaxis" "[0 1 0 -256] 0.25"
+			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -75,8 +75,8 @@ world
 		}
 		side
 		{
-			"id" "16"
-			"plane" "(64 64 64) (0 64 64) (0 64 0)"
+			"id" "275"
+			"plane" "(64 64 64) (-64 64 64) (-64 64 -64)"
 			"material" "BRICK/BRICKFLOOR001A"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -86,8 +86,8 @@ world
 		}
 		side
 		{
-			"id" "17"
-			"plane" "(64 0 0) (0 0 0) (0 0 64)"
+			"id" "276"
+			"plane" "(64 -64 -64) (-64 -64 -64) (-64 -64 64)"
 			"material" "BRICK/BRICKFLOOR001A"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -97,7 +97,7 @@ world
 		}
 		editor
 		{
-			"color" "0 127 160"
+			"color" "0 103 228"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}

@@ -2,11 +2,23 @@
 #include <stdio.h>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 #include "glm/glm.hpp"
 
 #define EPSILON 0.05
  
+/*
+ * The following source code is based on the following paper:
+ * https://github.com/stefanha/map-files/blob/master/MAPFiles.pdf
+ * 
+ * The described principles are implemented in a slightly different matter,
+ * to fit the engine's needs. 
+ * 
+ * @author Kraus David
+ * @date 24.04.2020
+ */ 
+
 typedef struct
 {
     int x, y, z;
@@ -23,11 +35,23 @@ typedef struct
 struct s_poly_t
 {
     std::vector<glm::vec3> vertices;
+    glm::vec3 center;
+    glm::vec3 normal; //TODO: add a plane_t struct to this struct.
+                      //TODO: Then we would only have one array of polygons, as one face = one polygon.
 };
 typedef struct s_poly_t poly_t;
 
+typedef enum
+{ 
+    ON_PLANE, FRONT, BACK
+} PlaneLoc;
+
+void calculateNormal(glm::vec3& a, glm::vec3& b, glm::vec3* dest);
+void calculatePlane(plane_t& plane);
 bool getIntersection(plane_t a, plane_t b, plane_t c, glm::vec3* dest);
+PlaneLoc pointLocationOnPlane(plane_t& plane, glm::vec3* point);
 bool containsVertex(poly_t poly, glm::vec3* vert);
+void sortVertices(poly_t& polygon);
 
 int main()
 {
@@ -48,14 +72,7 @@ int main()
         plane.p2 = glm::vec3(plane.ip2.x, plane.ip2.y, plane.ip2.z);
         plane.p3 = glm::vec3(plane.ip3.x, plane.ip3.y, plane.ip3.z);
 
-        // Calculate plane normal
-        glm::vec3 p1tp2 = plane.p2 - plane.p1;
-        glm::vec3 p1tp3 = plane.p3 - plane.p1;
-        plane.normal = glm::normalize(glm::cross(p1tp2, p1tp3));
-
-        // Calculate plane offset (From equation "n*P+d=0" or "ax+by+cz+d=0")
-        // (Using the second one here)
-        plane.d = -plane.normal.x * plane.p1.x - plane.normal.y * plane.p1.y - plane.normal.z * plane.p1.z;
+        calculatePlane(plane);
 
         printf("PLANE: (%d %d %d)*(x, y, z) + %d\n",
             (int) plane.normal.x, (int) plane.normal.y, (int) plane.normal.z,
@@ -73,6 +90,8 @@ int main()
     for (int i = 0; i < planes.size(); i++)
     {
         polygons[i].vertices = std::vector<glm::vec3>();
+        polygons[i].center = glm::vec3();
+        polygons[i].normal = planes.at(i).normal;
         for (int j = 0; j < planes.size(); j++)
         {
             for (int k = 0; k < planes.size(); k++)
@@ -92,8 +111,7 @@ int main()
                     for (int m = 0; m < planes.size() && legal; m++)
                     {
                         plane_t plane = planes.at(i);
-                        float t = glm::dot(plane.normal, intersection) + plane.d;
-                        if (t >= EPSILON && t <= -EPSILON)
+                        if (pointLocationOnPlane(plane, &intersection) != ON_PLANE)
                         {
                             legal = false;
                         }
@@ -107,11 +125,17 @@ int main()
                         if (!containsVertex(polygons[i], &intersection))
                         {
                             polygons[i].vertices.push_back(intersection);
+                            polygons[i].center += intersection;
                         }
                     }
                 }
             }
         }
+
+        polygons[i].center *= (1.0f / (float) polygons[i].vertices.size());
+
+        //Sort vertices for each polygon
+        sortVertices(polygons[i]);
     }
     // ----------------------------------------------------------------------
     // Print and Write
@@ -136,6 +160,21 @@ int main()
     return 0;
 }
 
+void calculateNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c, glm::vec3* dest)
+{
+    *dest = glm::normalize(glm::cross(b - a, c - a));
+}
+
+void calculatePlane(plane_t& plane)
+{
+    // Calculate plane normal
+    calculateNormal(plane.p1, plane.p2, plane.p3, &plane.normal);
+
+    // Calculate plane offset (From equation "n*P+d=0" or "ax+by+cz+d=0 => d = -ax - by - cz")
+    // (Using the second one here)
+    plane.d = -plane.normal.x * plane.p1.x - plane.normal.y * plane.p1.y - plane.normal.z * plane.p1.z;
+}
+
 bool getIntersection(plane_t a, plane_t b, plane_t c, glm::vec3* dest)
 {
     float denom = (float) glm::dot(a.normal, glm::cross(b.normal, c.normal));
@@ -155,6 +194,17 @@ bool roundEqual(glm::vec3* a, glm::vec3* b)
     return round(a->x) == round(b->x) && round(a->y) == round(b->y) && round(a->z) == round(b->z);
 }
 
+PlaneLoc pointLocationOnPlane(plane_t& plane, glm::vec3* point)
+{
+    float dotProd = glm::dot(plane.normal, *point) + plane.d;
+
+    if (dotProd >= EPSILON)
+        return FRONT;
+    if (dotProd <= -EPSILON)
+        return BACK;
+    else return ON_PLANE;
+}
+
 bool containsVertex(poly_t poly, glm::vec3* vert)
 {
     bool contained = false;
@@ -164,4 +214,60 @@ bool containsVertex(poly_t poly, glm::vec3* vert)
     }
 
     return contained;
+}
+
+void sortVertices(poly_t& polygon)
+{
+    size_t vertexCount = polygon.vertices.size();
+    for (int i = 0; i < vertexCount - 2; i++)
+    {
+        glm::vec3 vertex = polygon.vertices.at(i);
+        glm::vec3 centerToVertex = glm::normalize(vertex - polygon.center);
+
+        double smallestAngle = -1;
+        int smallestIdx = -1;
+
+        //This plane will divide the vertices into the ones with more and less than 180°.
+        plane_t splitPlane;
+        splitPlane.p1 = polygon.center;
+        splitPlane.p2 = polygon.center + polygon.normal;
+        splitPlane.p3 = polygon.center + centerToVertex;
+        calculatePlane(splitPlane);
+
+        //TODO: check the condition. i or i + 1?
+        for (int j = i + 1; j < vertexCount; j++)
+        {
+            //The candidate is the possible next vertex
+            glm::vec3 candidate = polygon.vertices.at(j);
+
+            if (pointLocationOnPlane(splitPlane, &candidate) != BACK)
+            {
+                glm::vec3 centerToCandidate = glm::normalize(candidate - polygon.center);
+                double angle = glm::dot(centerToVertex, centerToCandidate);
+
+                if (angle > smallestAngle)
+                {
+                    smallestAngle = angle;
+                    smallestIdx = j;
+                }
+            }
+        }
+
+        // Swap the next vertex in the row with the
+        // one we picked
+        // TODO: Replace all .at() with the index-operator ([])
+        glm::vec3 temp = polygon.vertices[i + 1];
+        polygon.vertices[i + 1] = polygon.vertices[smallestIdx];
+        polygon.vertices[smallestIdx] = temp;
+    }
+
+    // Reverse the order of the vertices if the polygon is facing in the wrong direction.
+    // This is important to keep back-face culling working, as it is determined by the order
+    // in which we draw our vertices.
+    glm::vec3 normal;
+    calculateNormal(polygon.vertices[0], polygon.vertices[1], polygon.vertices[2], &normal);
+    if (glm::dot(polygon.normal, normal) < -EPSILON)
+    {
+        std::reverse(polygon.vertices.begin(), polygon.vertices.end());
+    }
 }
