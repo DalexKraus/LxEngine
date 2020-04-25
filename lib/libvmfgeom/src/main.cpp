@@ -37,7 +37,7 @@ typedef struct
 
 typedef struct
 {
-    // The infinite base plane (or the face) of the face of this polygon
+    // The infinite base plane of this polygon
     plane_t plane;
 
     std::vector<glm::vec3> vertices;
