@@ -8,4 +8,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 file(GLOB_RECURSE CXX_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp")
 
 include_directories("include/")
-add_executable(libvmf${CXX_SOURCES})
+
+add_compile_definitions(LIBVMF_EXPORT) # We want to export our function definitions
+
+add_executable(libvmf ${CXX_SOURCES})
