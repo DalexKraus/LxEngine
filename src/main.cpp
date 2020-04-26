@@ -6,6 +6,8 @@
 
 #include "fileutil.h"
 
+#include "libvmf/libvmf.h"
+
 double dTime;
 lxVao vao;
 lxShader shader;
@@ -50,7 +52,16 @@ void draw(double deltaTime)
 int main()
 {
     printf("Starting engine ...\n");
-    
+
+    /* Load map */
+    vmf_t map = vmfOpen("maps/test.vmf");
+    vmfLoadBrushes(map);
+
+
+    vmfClose(map);
+    vmfFree(map);
+
+    /* Create window */
     lxwindow = new LxWindow("LynxEngine", 1280, 720, false);
     lxwindow->antiAlias(true);
     lxwindow->useVsync(true);
@@ -64,14 +75,14 @@ int main()
     lxShaderLink(shader, NULL);
 
     float vertices[] = {
-		-10.5f, 0.5f, -1.0f,     //upper left
+		-0.5f, 0.5f, -1.0f,     //upper left
 		-0.5f, -0.5f, -1.0f,    //lower left
 		0.5f, -0.5f, -1.0f,     //lower right
 		0.5f, 0.5f, -1.0f,      //upper right
 	};
 
 	unsigned int indices[] = {
-		0, 1, 3, 3, 1, 2
+	    0, 1, 3, 3, 1, 2
 	};
 
     vao = lxVaoCreate();

@@ -173,7 +173,7 @@ LIBVMF void vmfLoadBrushes(vmf_t vmf)
 
 LIBVMF void vmfFreeBrushes(vmf_t vmf)
 {
-
+    /* TODO: remove this */
 }
 
 char* trim(char* str)

@@ -20,5 +20,13 @@ target_link_libraries(lxengine glfw ${GLFW_LIBRARIES})
 # Linker options (For other libraries)
 add_link_options(lxengine, "-L./lib")
 
+# LibVMF
+add_library(libvmf SHARED IMPORTED)
+set_target_properties(libvmf PROPERTIES
+    IMPORTED_LOCATION {$PROJECT_SOURCE_DIR}/lib/libvmf.dll
+    IMPORTED_IMPLIB {$PROJECT_SOURCE_DIR}/lib/libvmf.lib
+)
+target_link_libraries(lxengine libvmf)
+
 # C-GLM (DEPRECATED)
 # add_link_options(lxengine "-llibcglm")
