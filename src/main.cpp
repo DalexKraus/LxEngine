@@ -54,8 +54,11 @@ int main()
     printf("Starting engine ...\n");
 
     /* Load map */
-    vmf_t map = vmfOpen("maps/test.vmf");
-
+    vmf_t map = vmfOpen("maps/map.vmf");
+    vmfLoadBrushes(map);
+    
+    vmfClose(map);
+    vmfFree(map);
 
     /* Create window */
     lxwindow = new LxWindow("LynxEngine", 1280, 720, false);
