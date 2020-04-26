@@ -132,10 +132,6 @@ LIBVMF void vmfLoadBrushes(vmf_t vmf)
             fgets(line, VMF_MAX_LINE_LEN, fd);
             char* value = keyValue(line, VMF_KEY_ID);
             brushInstance->id = atoi(value);
-            if (brushInstance->id == 0)
-            {
-                printf("LINE: %s\n", line);
-            }
             
             printf("\n\tBrush #%d faces: ", brushInstance->id);
 
