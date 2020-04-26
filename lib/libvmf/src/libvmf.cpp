@@ -54,7 +54,7 @@ LIBVMF void vmfFree(vmf_t& vmf)
  * Note:    The line must only contain the value and the key.
  *          Leading and trailing whitespaces are ignored.
  */ 
-char* keyValue(char* line, char* key)
+char* keyValue(char* line, const char* key)
 {
     char* trimmedLine = trim(line) +
         strlen(key) + 4;                            //Skip the key, spaces and quotes.
