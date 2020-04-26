@@ -5,7 +5,7 @@
 #include <vector>
 
 #ifndef LIBVMF
-    #ifdef LIBVMF_EXPORT
+    #ifdef LIB_EXPORT
         #define LIBVMF __declspec(dllexport)
     #else
         #ifdef TEST

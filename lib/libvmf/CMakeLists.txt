@@ -7,9 +7,9 @@ project(libvmf VERSION 1.1)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 # We want to export our function definitions
-add_compile_definitions(LIBVMF_EXPORT)
+add_compile_definitions(LIB_EXPORT)
 
 #Include dir
 include_directories("include/")
 
-add_library(libvmf SHARED "src/libvmf.cpp")
+add_library(libvmf SHARED "src/vmf.cpp")

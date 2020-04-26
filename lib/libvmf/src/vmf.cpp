@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "libvmf.h"
+#include "vmf.hpp"
 
 #ifndef ERRORBOX
 #ifdef _WIN32

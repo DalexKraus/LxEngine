@@ -1,12 +1,11 @@
+#include "fileutil.h"
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "lx.hpp"
 #include "lxvao.hpp"
 #include "lxshader.hpp"
 
-#include "glm/gtc/matrix_transform.hpp"
-
-#include "fileutil.h"
-
-#include "libvmf/libvmf.h"
+#include "libvmf/vmf.hpp"
 
 double dTime;
 lxVao vao;
@@ -32,7 +31,7 @@ void draw(double deltaTime)
     camera->updateView();
 
     int fps = (int) (1.0 / deltaTime);
-    printf("FPS: %d\n", fps);
+    //printf("FPS: %d\n", fps);
 
     //Draw
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -56,7 +55,7 @@ int main()
     /* Load map */
     vmf_t map = vmfOpen("maps/map.vmf");
     vmfLoadBrushes(map);
-    
+
     vmfClose(map);
     vmfFree(map);
 
