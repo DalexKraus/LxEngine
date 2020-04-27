@@ -33,6 +33,11 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "ios": "cpp",
-        "filesystem": "c"
+        "filesystem": "c",
+        "cctype": "c",
+        "locale": "c",
+        "xutility": "cpp",
+        "initializer_list": "cpp",
+        "unordered_map": "cpp"
     }
 }

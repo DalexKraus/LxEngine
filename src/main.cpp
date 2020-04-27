@@ -13,6 +13,8 @@ lxShader shader;
 LxWindow* lxwindow;
 LxCamera* camera;
 
+unsigned int indexCount;
+
 extern void camctrl_init();
 extern void camctrl_keyboard(GLFWwindow* window);
 extern void camctrl_mouse(GLFWwindow* window, double xpos, double ypos);
@@ -43,7 +45,7 @@ void draw(double deltaTime)
     lxShaderUniformMat4(u_viewMatrix,       camera->getView());
 
     glEnableVertexAttribArray(0);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 
     lxShaderStop();
 }
@@ -55,9 +57,8 @@ int main()
     /* Load map */
     vmf_t map = vmfOpen("maps/map.vmf");
     vmfLoadBrushes(map);
-
+    vmfPopulateVertices(map);
     vmfClose(map);
-    vmfFree(map);
 
     /* Create window */
     lxwindow = new LxWindow("LynxEngine", 1280, 720, false);
@@ -72,25 +73,42 @@ int main()
     lxShaderCompile(shader, shaderFsh, GL_FRAGMENT_SHADER);
     lxShaderLink(shader, NULL);
 
+/*
     float vertices[] = {
 		-0.5f, 0.5f, -1.0f,     //upper left
 		-0.5f, -0.5f, -1.0f,    //lower left
 		0.5f, -0.5f, -1.0f,     //lower right
 		0.5f, 0.5f, -1.0f,      //upper right
 	};
+*/
 
-	unsigned int indices[] = {
-	    0, 1, 3, 3, 1, 2
-	};
+    VmfBrush* brush = map->brushes->at(0);
+    size_t verticesSpace = vmfGetVertexSize(brush);
+    float* vertices = (float*) malloc(verticesSpace);
+    vmfCopyVertexData(brush, vertices);
+    
+    indexCount = (unsigned int) (verticesSpace / (sizeof(float) * 3));
+    printf("indices: %d\n", indexCount);
+
+	unsigned int* indices = (unsigned int*) malloc(sizeof(unsigned int) * indexCount);
+    for (unsigned int i = 0; i < indexCount; i++)
+        indices[i] = i;
+
+    for (unsigned int i = 0; i < indexCount * 3; i++)
+    {
+        printf(" %10f ", vertices[i]);
+        if (((i + 1) % 3) == 0)
+            printf("\n");
+    }
 
     vao = lxVaoCreate();
-    lxVaoStoreIndicesList(vao, indices, sizeof(indices), 6);
-    lxVaoStoreData(vao, 0, vertices, sizeof(vertices), 3);
+    lxVaoStoreIndicesList(vao, indices, indexCount * sizeof(unsigned int), indexCount);
+    lxVaoStoreData(vao, 0, vertices, verticesSpace, 3);
 
     float fovY      = 120;
     float aspect    = (float) lxwindow->width() / (float) lxwindow->height();
     camera          = new LxCamera(fovY, aspect, 0.001f, 1000.0f);
-    camera->translate(glm::vec3(0,0,5));
+    camera->translate(glm::vec3(0, 0, 5));
 
     //Camera callbacks
     glfwSetCursorPosCallback(lxwindow->handle(), &camctrl_mouse);
@@ -98,6 +116,8 @@ int main()
 
     lxwindow->show(&draw);
     
+    free(vertices);
+    vmfFree(map);
     lxVaoDestroy(vao);
     lxShaderDestroy(shader);
     delete lxwindow;

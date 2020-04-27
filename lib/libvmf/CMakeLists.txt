@@ -12,4 +12,4 @@ add_compile_definitions(LIB_EXPORT)
 #Include dir
 include_directories("include/")
 
-add_library(libvmf SHARED "src/vmf.cpp")
+add_library(libvmf SHARED "src/vmf.cpp" "src/util.cpp" "src/geom.cpp")

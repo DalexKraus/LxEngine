@@ -1,5 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "vmf.hpp"
+#include "util.hpp"
+#include "geom.hpp"
 
 #ifndef ERRORBOX
 #ifdef _WIN32
@@ -7,8 +9,6 @@
 #define ERRORBOX(msg) MessageBoxA(0, msg, "LibVMF", 0);
 #endif
 #endif
-
-char* trim(char* str);
 
 LIBVMF vmf_t vmfOpen(const char* filePath)
 {
@@ -50,19 +50,6 @@ LIBVMF void vmfFree(vmf_t& vmf)
     vmf = 0;
 }
 
-/*
- * Returns the value of the given key in a line.
- * Note:    The line must only contain the value and the key.
- *          Leading and trailing whitespaces are ignored.
- */ 
-char* keyValue(char* line, const char* key)
-{
-    char* trimmedLine = trim(line) +
-        strlen(key) + 4;                            //Skip the key, spaces and quotes.
-    trimmedLine[strlen(trimmedLine) - 1] = '\0';    //Remove the trailing quote
-    return trimmedLine;
-}
-
 VmfBrush* newBrush(vmf_t vmf)
 {
     VmfBrush* brushInstance = new VmfBrush();
@@ -72,12 +59,12 @@ VmfBrush* newBrush(vmf_t vmf)
     return brushInstance;
 }
 
-BrushSide* newSide(VmfBrush* brush)
+Face* newSide(VmfBrush* brush)
 {
-    BrushSide* sideInstance = new BrushSide();
+    Face* sideInstance = new Face();
 
     //Append created side to list of sides in the brush
-    brush->sides.push_back(sideInstance);
+    brush->faces.push_back(sideInstance);
     return sideInstance;
 }
 
@@ -153,12 +140,12 @@ LIBVMF void vmfLoadBrushes(vmf_t vmf)
                     char* value = keyValue(line, VMF_KEY_PLANE);
                     
                     // Allocate a new face and store the vectors
-                    BrushSide* side = newSide(brushInstance);
+                    Face* side = newSide(brushInstance);
                     faceCount++;
-                    sscanf(value, "(%d %d %d) (%d %d %d) (%d %d %d)",
-                        &side->p1.m_x, &side->p1.m_y, &side->p1.m_z,
-                        &side->p2.m_x, &side->p2.m_y, &side->p2.m_z,
-                        &side->p3.m_x, &side->p3.m_y, &side->p3.m_z);
+                    sscanf(value, "(%f %f %f) (%f %f %f) (%f %f %f)",
+                        &side->p1.x, &side->p1.y, &side->p1.z,
+                        &side->p2.x, &side->p2.y, &side->p2.z,
+                        &side->p3.x, &side->p3.y, &side->p3.z);
 
                     printf("%d ", faceCount);
                 }
@@ -172,30 +159,106 @@ LIBVMF void vmfLoadBrushes(vmf_t vmf)
     printf("\n==> Loaded %d brush(es)\n", (int) vmf->brushes->size());
 }
 
-LIBVMF void vmfFreeBrushes(vmf_t vmf)
+LIBVMF void vmfPopulateVertices(vmf_t vmf)
 {
-    /* TODO: remove this */
+    printf("[LibVMF] Populating vertices ...\n");
+
+    for (auto* brush : *vmf->brushes)
+    {
+        printf("\tBrush #%d: %d faces, ", brush->id, (int) brush->faces.size());
+
+        int vertexCount = 0;
+        int illegalVertexCount = 0;
+        size_t faceCount = brush->faces.size();
+
+        //Calculate planes for each brush
+        for (int i = 0; i < faceCount; i++)
+        {
+            Face* a = brush->faces[i];
+            calculateFace(a);
+            
+            for (int j = 0; j < faceCount; j++)
+            {
+                for (int k = 0; k < faceCount; k++)
+                {
+                    if (i != j && i != k && j != k)
+                    {
+                        Face* b = brush->faces[j];
+                        Face* c = brush->faces[k];
+
+                        glm::vec3 intersection;
+                        bool intersectionFound = getIntersection(a, b, c, &intersection);
+                        if (!intersectionFound)
+                            continue;
+
+                        //Check if vertex is outside the solid
+                        bool legal = true;
+                        for (int m = 0; m < faceCount && legal; m++)
+                        {
+                            Face* face = brush->faces[i];
+                            if (classifyPoint(face, &intersection) != ON_PLANE)
+                            {
+                                legal = false;
+                            }
+                        }
+
+                        if (!legal)
+                            illegalVertexCount++;
+
+                        if (legal)
+                        {
+                            if (!containsVertex(a, &intersection))
+                            {
+                                a->vertices.push_back(intersection);
+                                a->center += intersection;
+                                vertexCount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Average the center
+            brush->faces[i]->center *= (1.0f / (float) vertexCount);
+
+            //Sort vertices for each face
+            sortVertices(brush->faces[i]);
+        }
+        
+        printf("%d vert(s), %d illegal;\n", vertexCount, illegalVertexCount);
+    }
 }
 
-char* trim(char* str)
+LIBVMF size_t vmfGetVertexSize(VmfBrush* brush)
 {
-    char* end;
+    if (brush == 0)
+        return 0;
 
-    // Trim leading spaces
-    while (isspace((unsigned char) *str))
-        str++;
+    size_t vertexCount = 0;
+    for (auto* face : brush->faces)
+    {
+        vertexCount += face->vertices.size();
+    }
 
-    // Return if we don't have any chars left
-    if (*str == 0) 
-        return str;
+    // Times 3 as one vertex has 3 components (x, y, z).
+    return vertexCount * sizeof(float) * 3;
+}
 
-    // Trim trailing spaces
-    end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char) *end))
-        end--;
+LIBVMF void vmfCopyVertexData(VmfBrush* brush, float* dest)
+{
+    if (brush == 0 || dest == 0)
+        return;
 
-    // Write new null-terminator
-    end[1] = '\0';
-
-    return str;
+    unsigned int pos = 0;
+    for (int faceIdx = 0; faceIdx < brush->faces.size(); faceIdx++)
+    {
+        Face* face = brush->faces[faceIdx];
+        for (int vertIdx = 0; vertIdx < face->vertices.size(); vertIdx++)
+        {
+            glm::vec3 vertex = face->vertices[vertIdx];
+            dest[pos++] = vertex.x;
+            dest[pos++] = vertex.y;
+            dest[pos++] = vertex.z;
+        }
+    }
 }

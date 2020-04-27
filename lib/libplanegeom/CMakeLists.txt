@@ -12,4 +12,4 @@ add_compile_definitions(LIBPLANEGEOM_EXPORT)
 #Include dir
 include_directories("include/")
 
-add_library(libvmf SHARED "src/libplanegeom.cpp")
+add_library(libPlaneGeom SHARED "src/planegeom.cpp")
