@@ -172,6 +172,12 @@ LIBVMF void vmfPopulateVertices(vmf_t vmf)
         size_t faceCount = brush->faces.size();
 
         //Calculate planes for each brush
+        for (auto* face : brush->faces)
+        {
+            calculateFace(face);
+        }
+
+        //Calculate vertices for this face by intersecting with all other planes in this brush
         for (int i = 0; i < faceCount; i++)
         {
             Face* a = brush->faces[i];
@@ -256,9 +262,9 @@ LIBVMF void vmfCopyVertexData(VmfBrush* brush, float* dest)
         for (int vertIdx = 0; vertIdx < face->vertices.size(); vertIdx++)
         {
             glm::vec3 vertex = face->vertices[vertIdx];
-            dest[pos++] = vertex.x;
-            dest[pos++] = vertex.y;
-            dest[pos++] = vertex.z;
+            dest[pos++] = vertex.x / 128.0f;
+            dest[pos++] = vertex.y / 128.0f;
+            dest[pos++] = vertex.z / 128.0f;
         }
     }
 }

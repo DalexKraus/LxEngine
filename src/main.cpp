@@ -88,18 +88,10 @@ int main()
     vmfCopyVertexData(brush, vertices);
     
     indexCount = (unsigned int) (verticesSpace / (sizeof(float) * 3));
-    printf("indices: %d\n", indexCount);
 
 	unsigned int* indices = (unsigned int*) malloc(sizeof(unsigned int) * indexCount);
     for (unsigned int i = 0; i < indexCount; i++)
         indices[i] = i;
-
-    for (unsigned int i = 0; i < indexCount * 3; i++)
-    {
-        printf(" %10f ", vertices[i]);
-        if (((i + 1) % 3) == 0)
-            printf("\n");
-    }
 
     vao = lxVaoCreate();
     lxVaoStoreIndicesList(vao, indices, indexCount * sizeof(unsigned int), indexCount);

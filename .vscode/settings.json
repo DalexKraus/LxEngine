@@ -38,6 +38,8 @@
         "locale": "c",
         "xutility": "cpp",
         "initializer_list": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "iomanip": "c",
+        "xmemory": "c"
     }
 }

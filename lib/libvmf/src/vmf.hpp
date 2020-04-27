@@ -67,7 +67,6 @@ public:
         normal = glm::vec3();
         center = glm::vec3();
         vertices = std::vector<glm::vec3>();
-        printf("d: %f", d);
     }
 };
 

@@ -119,10 +119,13 @@ void sortVertices(Face* face)
         }
 
         // Swap the next vertex in the row with the
-        // one we picked
-        glm::vec3 temp = face->vertices[i + 1];
-        face->vertices[i + 1] = face->vertices[smallestIdx];
-        face->vertices[smallestIdx] = temp;
+        // one we picked (only if we found a smallest one)
+        if (smallestIdx != -1)
+        {
+            glm::vec3 temp = face->vertices[i + 1];
+            face->vertices[i + 1] = face->vertices[smallestIdx];
+            face->vertices[smallestIdx] = temp;
+        }
     }
 
     // Reverse the order of the vertices if the face is facing in the wrong direction.
