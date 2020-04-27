@@ -14,6 +14,7 @@ LIBVMF vmf_t vmfOpen(const char* filePath)
 {
     vmf_t vmf = (vmf_t) malloc(sizeof(struct vmf_s));
 
+    printf("[LibVMF] Reading '%s' ...\n", filePath);
     vmf->f = fopen(filePath, "r");
     vmf->brushes = new std::vector<VmfBrush*>();
     vmf->skyName = (const char*) calloc(VMF_MAX_SKYN_LEN, sizeof(char));
