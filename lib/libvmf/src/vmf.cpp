@@ -1,3 +1,14 @@
+ /*
+ * Some of the code here is based on the following paper:
+ * https://github.com/stefanha/map-files/blob/master/MAPFiles.pdf
+ * 
+ * The described principles are implemented in a slightly different matter,
+ * to fit the engine's needs. 
+ * 
+ * @author Kraus David
+ * @date 24.04.2020
+ */ 
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "vmf.hpp"
 #include "util.hpp"
@@ -262,7 +273,7 @@ LIBVMF void vmfCopyVertexData(VmfBrush* brush, float* dest)
         for (int vertIdx = 0; vertIdx < face->vertices.size(); vertIdx++)
         {
             glm::vec3 vertex = face->vertices[vertIdx];
-            dest[pos++] = vertex.x / -128.0f;
+            dest[pos++] = vertex.x / -128.0f; //Mirror y-axis by mult. with -1
             dest[pos++] = vertex.y / -128.0f;
             dest[pos++] = vertex.z / -128.0f;
         }

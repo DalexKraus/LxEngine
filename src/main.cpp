@@ -27,13 +27,7 @@ void draw(double deltaTime)
 
     //Check for input
     camctrl_keyboard(lxwindow->handle());
-
-    //Update camera
-    //glm::vec3 translation = glm::vec3(cos(time), 0, 5 + sin(time));
     camera->updateView();
-
-    int fps = (int) (1.0 / deltaTime);
-    //printf("FPS: %d\n", fps);
 
     //Draw
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -45,7 +39,7 @@ void draw(double deltaTime)
     lxShaderUniformMat4(u_viewMatrix,       camera->getView());
 
     glEnableVertexAttribArray(0);
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLE_FAN, indexCount, GL_UNSIGNED_INT, 0);
 
     lxShaderStop();
 }
@@ -72,15 +66,6 @@ int main()
     lxShaderCompile(shader, shaderVsh, GL_VERTEX_SHADER);
     lxShaderCompile(shader, shaderFsh, GL_FRAGMENT_SHADER);
     lxShaderLink(shader, NULL);
-
-/*
-    float vertices[] = {
-		-0.5f, 0.5f, -1.0f,     //upper left
-		-0.5f, -0.5f, -1.0f,    //lower left
-		0.5f, -0.5f, -1.0f,     //lower right
-		0.5f, 0.5f, -1.0f,      //upper right
-	};
-*/
 
     VmfBrush* brush = map->brushes->at(0);
     size_t verticesSpace = vmfGetVertexSize(brush);
