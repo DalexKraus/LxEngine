@@ -1,5 +1,5 @@
-#ifndef __LXVAO_H
-#define __LXVAO_H
+#ifndef LX_VAO_H
+#define LX_VAO_H
 
 #include "lx.hpp"
 

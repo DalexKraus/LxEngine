@@ -1,4 +1,4 @@
-#include "lxvao.hpp"
+#include "LxVao.hpp"
 
 //Global VAO count
 static int g_vaoCount = 0;

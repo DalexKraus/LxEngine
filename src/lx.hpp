@@ -14,14 +14,14 @@
 #endif
 
 //LXEngine debugging util
-#include "lxdbg.hpp"
+#include "util/lxdbg.hpp"
 
 //GLAD and GLFW includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 //LXEngine Window and camera
-#include "lxwindow.hpp"
-#include "lxcamera.hpp"
+#include "LxWindow.hpp"
+#include "LxCamera.hpp"
 
 #endif

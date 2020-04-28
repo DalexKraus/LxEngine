@@ -1,9 +1,9 @@
-#include "fileutil.h"
+#include "util/fileutil.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "lx.hpp"
-#include "lxvao.hpp"
-#include "lxshader.hpp"
+#include "LxVao.hpp"
+#include "shader/LxShader.hpp"
 
 #include "libvmf/vmf.hpp"
 

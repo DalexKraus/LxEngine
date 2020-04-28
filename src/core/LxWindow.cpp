@@ -1,4 +1,4 @@
-#include "lxwindow.hpp"
+#include "LxWindow.hpp"
 
 /**
  * Creates a new window with the given width, height and title. 

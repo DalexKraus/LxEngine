@@ -10,12 +10,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${LX_BIN_DIR})
 # --------------------  Sources --------------------
 file(GLOB_RECURSE CXX_SOURCES RELATIVE  ${CMAKE_SOURCE_DIR} "src/*.cpp")
 file(GLOB_RECURSE C_SOURCES RELATIVE    ${CMAKE_SOURCE_DIR} "src/*.c")
+include_directories("include/")
+include_directories("src/")
+include_directories("src/core")
 add_executable(lxengine ${CXX_SOURCES}  ${C_SOURCES})
 
 # -------------------- Libraries --------------------
 # GLFW
 add_subdirectory("lib/glfw3")
-include_directories("include/")
 target_link_libraries(lxengine glfw ${GLFW_LIBRARIES})
 
 # LibVMF

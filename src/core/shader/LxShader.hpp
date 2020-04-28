@@ -1,5 +1,5 @@
-#ifndef __LXSHADER_H
-#define __LXSHADER_H
+#ifndef LX_SHADER_H
+#define LX_SHADER_H
 
 #include "lx.hpp"
 

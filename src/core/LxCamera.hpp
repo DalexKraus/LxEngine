@@ -1,5 +1,5 @@
-#ifndef __LXCAMERA_H
-#define __LXCAMERA_H
+#ifndef LX_CAMERA_H
+#define LX_CAMERA_H
 
 #include "glm/vec3.hpp"
 #include "glm/mat4x4.hpp"

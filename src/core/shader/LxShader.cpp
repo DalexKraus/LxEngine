@@ -1,5 +1,5 @@
-#include "lxshader.hpp"
-#include "lxdbg.hpp"
+#include "LxShader.hpp"
+#include "util/lxdbg.hpp"
 
 bool checkError(int programId, GLuint errorType);
 

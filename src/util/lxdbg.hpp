@@ -1,5 +1,5 @@
-#ifndef __LXDBG_H
-#define __LXDBG_H
+#ifndef LX_DBG_H
+#define LX_DBG_H
 
 #include <stdbool.h>
 

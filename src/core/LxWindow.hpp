@@ -1,5 +1,5 @@
-#ifndef __LXWINDOW_H
-#define __LXWINDOW_H
+#ifndef LX_WINDOW_H
+#define LX_WINDOW_H
 
 #include "lx.hpp"
 
