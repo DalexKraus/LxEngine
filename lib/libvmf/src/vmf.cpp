@@ -143,9 +143,9 @@ LIBVMF void vmfLoadBrushes(vmf_t vmf)
                     Face* side = newSide(brushInstance);
                     faceCount++;
                     sscanf(value, "(%f %f %f) (%f %f %f) (%f %f %f)",
-                        &side->p1.x, &side->p1.y, &side->p1.z,
-                        &side->p2.x, &side->p2.y, &side->p2.z,
-                        &side->p3.x, &side->p3.y, &side->p3.z);
+                        &side->p1.x, &side->p1.z, &side->p1.y,
+                        &side->p2.x, &side->p2.z, &side->p2.y,
+                        &side->p3.x, &side->p3.z, &side->p3.y);
 
                     printf("%d ", faceCount);
                 }
@@ -262,9 +262,9 @@ LIBVMF void vmfCopyVertexData(VmfBrush* brush, float* dest)
         for (int vertIdx = 0; vertIdx < face->vertices.size(); vertIdx++)
         {
             glm::vec3 vertex = face->vertices[vertIdx];
-            dest[pos++] = vertex.x / 128.0f;
-            dest[pos++] = vertex.y / 128.0f;
-            dest[pos++] = vertex.z / 128.0f;
+            dest[pos++] = vertex.x / -128.0f;
+            dest[pos++] = vertex.y / -128.0f;
+            dest[pos++] = vertex.z / -128.0f;
         }
     }
 }
