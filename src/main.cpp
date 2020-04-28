@@ -79,8 +79,8 @@ int main()
         indices[i] = i;
 
     vao = lxVaoCreate();
-    lxVaoStoreIndicesList(vao, indices, indexCount * sizeof(unsigned int), indexCount);
-    lxVaoStoreData(vao, 0, vertices, verticesSpace, 3);
+    lxVaoStoreIndicesList(vao, indices, indexCount * sizeof(unsigned int), indexCount, false);
+    lxVaoStoreData(vao, 0, vertices, verticesSpace, 3, false);
 
     float fovY      = 120;
     float aspect    = (float) lxwindow->width() / (float) lxwindow->height();

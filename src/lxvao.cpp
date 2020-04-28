@@ -40,7 +40,7 @@ void lxVaoDestroy(lxVao vao)
 /**
  * Stores the given data in a new attribute array.
  */
-void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int dimension)
+void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int dimension, bool dynamic)
 {
     _ASSERT(vao     != NULL, "The VAO instance must not be null!");
     _ASSERT(data    != NULL, "The data must not be null!");
@@ -49,10 +49,12 @@ void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int 
     GLuint vboId;
     glGenBuffers(1, &vboId);
 
+    GLuint type = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
+
     //Store data in vbo
     lxVaoBind(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
-    glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_STATIC_DRAW); //TODO: Change to dynamic for batch rendering
+    glBufferData(GL_ARRAY_BUFFER, dataSize, data, type);
     glEnableVertexAttribArray(attrIdx);
     glVertexAttribPointer(attrIdx, dimension, GL_FLOAT, GL_FALSE, dimension * sizeof(float), 0);
     glDisableVertexAttribArray(attrIdx);
@@ -62,16 +64,18 @@ void lxVaoStoreData(lxVao vao, int attrIdx, GLfloat* data, size_t dataSize, int 
 /**
  * Stores the index buffer.
  */
-void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indicesCount)
+void lxVaoStoreIndicesList(lxVao vao, GLuint* data, size_t dataSize, int indicesCount, bool dynamic)
 {
     _ASSERT(vao     != NULL,    "The VAO instance must not be null!");
     _ASSERT(data    != NULL,    "The data must not be null!");
     _ASSERT(indicesCount != 0,  "The indices count is zero!");
     
+    GLuint type = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
+
     glGenBuffers(1, &vao->iboId);
     lxVaoBind(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->iboId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), data, GL_STATIC_DRAW); //TODO: Change to dynamic for batch rendering
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), data, type);
 }
 
 inline void lxVaoBind(lxVao vao)
